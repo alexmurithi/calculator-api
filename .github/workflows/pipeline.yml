@@ -8,24 +8,23 @@ on:
 
 jobs:
   build:
-    name: Pipeline
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Dependencies
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
-      - run: npm run prettier
-      - run: npm run prettier:fix
-      - run: npm run lint
+      - name: Install dependencies
+        run: npm install
 
-      - name: Super Linter
-        uses: super-linter/super-linter@v5
-        with:
-          full-depth: 0
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: master
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run Prettier check
+        run: npm run prettier
+
+      - name: Run Prettier Fix
+        run: npm run prettier:fix
