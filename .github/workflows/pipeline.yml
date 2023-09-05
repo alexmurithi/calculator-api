@@ -17,14 +17,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+
       - name: Install dependencies
         run: npm install
-
-      - name: Run lint
-        run: npm run lint
 
       - name: Run Prettier check
         run: npm run prettier
 
-      - name: Run Prettier Fix
-        run: npm run prettier:fix
+      - name: Run lint
+        run: npm run lint
