@@ -8,13 +8,17 @@ on:
 
 jobs:
   build:
-    name: Lint Check
+    name: Pipeline
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Install Dependencies
+        uses: actions/setup-node@v3
+        with:
+           node-version: 16
+      - run: npm ci
 
-      - name: Run Super Linter
+      - name: Super Linter
         uses: super-linter/super-linter@v5
         with:
           full-depth: 0
