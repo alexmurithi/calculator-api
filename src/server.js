@@ -1,8 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const compression = require('compression')
 const helmet = require('helmet')
-require('dotenv').config()
+require('./config/db.config')
 
 const app = express()
 const port = process.env.PORT || 8000
