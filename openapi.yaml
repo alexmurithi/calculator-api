@@ -1,0 +1,99 @@
+openapi: "3.0.0"
+info:
+  title: "Calculation API"
+  version: "1.0.0"
+servers:
+  - url:  http://localhost:6001
+    description: Localhost Server
+tags:
+  - name: Calculation
+    description: Calculation operations
+paths:
+  /api/calculator:
+    post:
+      summary: Perform Calculation and save in the database
+      tags:
+        - Calculation
+      responses:
+        201:
+          description: Calculation is performed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculationRequest'
+        500:
+          description: Perform Calculation failed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculationRequest'
+    get:
+      summary: Calculation History
+      tags:
+        - Calculation
+      responses:
+        "200":
+          description: Get All Calculations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Calculation"
+  /api/calculation/{id}:
+    get:
+      summary: Get Calculation By Id
+      tags:
+        - Calculation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Gets a Calculation by Id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Calculation"
+        404:
+          description: Calculation Not Found!
+components:
+  schemas:
+    Calculation:
+      type: object
+      properties:
+        id:
+          type: string
+        operand1:
+          type: number
+        operand2:
+          type: number
+        operation:
+          type: string
+        result:
+          type: number
+      required:
+        - id
+        - operand1
+        - operand2
+        - operation
+        - result
+
+    CalculationRequest:
+        type: object
+        properties:
+          operand1:
+            type: number
+          operand2:
+            type: number
+          operation:
+            type: string
+        required:
+          - operand1
+          - operand2
+          - operation
