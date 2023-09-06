@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const compression = require('compression')
 const helmet = require('helmet')
 const swaggerUI = require('swagger-ui-express')
+const cors = require('cors')
 
 const YAML = require('yamljs')
 
@@ -20,6 +21,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(compression())
 app.use(helmet())
+app.use(cors())
 
 app.use('/api/calculation', router)
 app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))

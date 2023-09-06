@@ -6,7 +6,7 @@ const calculationShema = new Schema(
   {
     operand1: Number,
     operand2: Number,
-    operation: String,
+    operator: String,
     result: Number,
   },
   { timestamps: true },
