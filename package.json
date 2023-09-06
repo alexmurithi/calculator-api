@@ -5,10 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "start:dev": "nodemon src/server.js",
-    "lint":"eslint src",
-    "prettier":"prettier src --check",
-    "prettier:fix":"prettier --log-level warn  --write src/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint src",
+    "prettier": "prettier src --check",
+    "prettier:fix": "prettier --log-level warn  --write src/",
+    "test": "jest --testTimeout=5000"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,9 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
-    "mongoose": "^7.5.0"
+    "jest": "^29.6.4",
+    "mongoose": "^7.5.0",
+    "supertest": "^6.3.3"
   },
   "devDependencies": {
     "eslint": "^8.48.0",
