@@ -28,13 +28,13 @@ describe('Calculation Controller', () => {
     const requestBody = {
       operand1: 2,
       operand2: 3,
-      operation: '+',
+      operator: '+',
     }
 
     const mockResult = {
       operand1: 2,
       operand2: 3,
-      operation: '+',
+      operator: '+',
       result: 5,
     }
 
@@ -51,8 +51,8 @@ describe('Calculation Controller', () => {
 
   it('should handle GET /', async () => {
     const mockHistory = [
-      { operand1: 2, operand2: 3, operation: '+', result: 5 },
-      { operand1: 4, operand2: 2, operation: '-', result: 2 },
+      { operand1: 2, operand2: 3, operator: '+', result: 5 },
+      { operand1: 4, operand2: 2, operator: '-', result: 2 },
     ]
 
     calculationService.calculationHistory.mockResolvedValue(mockHistory)
@@ -69,7 +69,7 @@ describe('Calculation Controller', () => {
       _id: 'someId',
       operand1: 2,
       operand2: 3,
-      operation: '+',
+      operator: '+',
       result: 5,
     }
 

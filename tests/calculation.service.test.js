@@ -22,7 +22,7 @@ describe('performCalculation', () => {
     const mockResult = {
       operand1: 2,
       operand2: 3,
-      operation: '+',
+      operator: '+',
       result: 5,
     }
     Calculation.create.mockResolvedValue(mockResult)
@@ -30,7 +30,7 @@ describe('performCalculation', () => {
     const result = await performCalculation({
       operand1: 2,
       operand2: 3,
-      operation: '+',
+      operator: '+',
     })
 
     expect(result).toEqual(mockResult)
@@ -43,7 +43,7 @@ describe('performCalculation', () => {
     const mockResult = {
       operand1: 5,
       operand2: 2,
-      operation: '-',
+      operator: '-',
       result: 3,
     }
     Calculation.create.mockResolvedValue(mockResult)
@@ -51,7 +51,7 @@ describe('performCalculation', () => {
     const result = await performCalculation({
       operand1: 5,
       operand2: 2,
-      operation: '-',
+      operator: '-',
     })
 
     expect(result).toEqual(mockResult)
@@ -64,7 +64,7 @@ describe('performCalculation', () => {
     const mockResult = {
       operand1: 4,
       operand2: 6,
-      operation: '*',
+      operator: '*',
       result: 24,
     }
     Calculation.create.mockResolvedValue(mockResult)
@@ -72,7 +72,7 @@ describe('performCalculation', () => {
     const result = await performCalculation({
       operand1: 4,
       operand2: 6,
-      operation: '*',
+      operator: '*',
     })
 
     expect(result).toEqual(mockResult)
@@ -85,7 +85,7 @@ describe('performCalculation', () => {
     const mockResult = {
       operand1: 8,
       operand2: 4,
-      operation: '/',
+      operator: '/',
       result: 2,
     }
     Calculation.create.mockResolvedValue(mockResult)
@@ -93,7 +93,7 @@ describe('performCalculation', () => {
     const result = await performCalculation({
       operand1: 8,
       operand2: 4,
-      operation: '/',
+      operator: '/',
     })
 
     expect(result).toEqual(mockResult)
@@ -105,8 +105,8 @@ describe('performCalculation', () => {
   it('should retrieve calculation history successfully', async () => {
     // Mock the return value of Calculation.find
     const mockHistory = [
-      { operand1: 2, operand2: 3, operation: '+', result: 5 },
-      { operand1: 4, operand2: 2, operation: '-', result: 2 },
+      { operand1: 2, operand2: 3, operator: '+', result: 5 },
+      { operand1: 4, operand2: 2, operator: '-', result: 2 },
     ]
 
     Calculation.find.mockResolvedValue(mockHistory)
@@ -124,7 +124,7 @@ describe('performCalculation', () => {
       _id: 'someId',
       operand1: 2,
       operand2: 3,
-      operation: '+',
+      operator: '+',
       result: 5,
     }
 
@@ -138,20 +138,20 @@ describe('performCalculation', () => {
     expect(Calculation.findById).toHaveBeenCalledWith('someId')
   })
 
-  it('should throw an error for an invalid operation', async () => {
+  it('should throw an error for an invalid operator', async () => {
     // Ensure that Calculation.create is not called in this case
     Calculation.create.mockImplementation(() => {
-      throw new Error('Invalid Operation')
+      throw new Error('Invalid operator')
     })
 
     // Use async/await  to handle the expected error
     try {
-      await performCalculation({ operand1: 2, operand2: 3, operation: '%' })
+      await performCalculation({ operand1: 2, operand2: 3, operator: '%' })
       // If no error is thrown, fail the test
       fail('Expected an error to be thrown')
     } catch (error) {
-      // Verify that the error message matches 'Invalid Operation'
-      expect(error.message).toBe('Invalid Operation')
+      // Verify that the error message matches 'Invalid operator'
+      expect(error.message).toBe('Invalid operator')
       // Verify that Calculation.create was not called
       expect(Calculation.create).not.toHaveBeenCalled()
     }
