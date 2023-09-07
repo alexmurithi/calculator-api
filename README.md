@@ -1,6 +1,6 @@
 
 ## Calculation API
-Calculation API built in Express.js and Node.js
+Calculation API built in Express.js,  Node.js and MongoDB
 
 ## Features
 - Perform basic calculations
