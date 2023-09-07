@@ -8,10 +8,9 @@ const multiplication = (a, b) => a * b
 
 const division = (a, b) => a / b
 
-const performCalculation = ({ operand1, operand2, operation }) => {
+const performCalculation = ({ operand1, operand2, operator }) => {
   let result
-
-  switch (operation) {
+  switch (operator) {
     case '+':
       result = addition(operand1, operand2)
       break
@@ -25,13 +24,13 @@ const performCalculation = ({ operand1, operand2, operation }) => {
       result = division(operand1, operand2)
       break
     default:
-      throw new Error('Invalid Operation')
+      throw new Error('Invalid operator')
   }
 
   return Calculation.create({
     operand1,
     operand2,
-    operation,
+    operator,
     result,
   })
     .then(item => item)
