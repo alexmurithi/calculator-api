@@ -21,9 +21,13 @@ Run Prettier
 Run Eslint
 `npm run lint`
 
+Run the application
+
+`npm run start:dev `
+
 
 The API is now running. Copy the url link provided and paste it on your favourite
-browser. It should look like `http://127.0.0.1:6001` this will display laravel default landing page.
+browser. It should look like `http://127.0.0.1:6001`
 
 To view Swagger documentation please navigate to `http::localhost:6001/api/docs`
 
