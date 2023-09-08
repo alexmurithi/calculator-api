@@ -5,8 +5,8 @@ const compression = require('compression')
 const helmet = require('helmet')
 const swaggerUI = require('swagger-ui-express')
 const cors = require('cors')
-
 const YAML = require('yamljs')
+const morgan = require('morgan')
 
 const router = require('./controllers/calculation.controller')
 
@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(compression())
 app.use(helmet())
 app.use(cors())
+app.use(morgan('combined'))
 
 app.use('/api/calculation', router)
 app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
