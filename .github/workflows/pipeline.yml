@@ -75,7 +75,7 @@ jobs:
             sudo aws configure set region us-east-1
             sudo $(aws ecr get-login --no-include-email --region us-east-1)
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
-            docker-compose -f "docker-compose.yml" up -d
+            docker-compose up -d
             
 
 
