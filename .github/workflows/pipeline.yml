@@ -48,12 +48,10 @@ jobs:
       - name: Build, tag, and push image to AWS ECR
         env:
           ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
-          ECR_REPOSITORY: "calculator-api"
+          ECR_REPOSITORY: calculator-api
           IMAGE_TAG: ${{github.sha}}
         run: |
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c0q1q5p8
-          docker build -t calculator-api .
-          docker tag calculator-api:latest public.ecr.aws/c0q1q5p8/calculator-api:latest
-          docker push public.ecr.aws/c0q1q5p8/calculator-api:latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
 
