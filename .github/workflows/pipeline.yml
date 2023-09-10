@@ -32,10 +32,6 @@ jobs:
       - name: Run Unit Tests
         run: npm run test
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -47,7 +43,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          mask-password: 'true'
+          mask-password: "true"
           registry-type: public
 
       - name: Build, tag, and push image to AWS ECR
@@ -79,3 +75,7 @@ jobs:
             sudo docker-compose -f docker-compose.yaml down
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
             docker-compose -f docker-compose.yaml up -d
+            
+
+
+
