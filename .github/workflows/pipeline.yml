@@ -56,4 +56,28 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG
 
+      - name: Deploy docker image to EC2 instance
+        env:
+          REGISTRY: ${{steps.login-ecr.outputs.registry}}
+          REPOSITORY: calculator-api
+          IMAGE_TAG: ${{github.sha}}
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{secrets.AWS_EC2_IP}}
+          username: ubuntu
+          key: ${{secrets.AWS_KEY_PAIR}}
+          script: |-
+            sudo apt update
+            sudo apt install docker.io -y
+            sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+            sudo apt install awscli -y
+            sudo ${aws ecr get-login --no-include-email --region us-east-1};
+            sudo docker stop $(docker ps -a -q)
+            sudo docker rm $(docker ps -a -q)
+            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            docker-compose -f docker-compose.yml up -d
+            
+
+
 
