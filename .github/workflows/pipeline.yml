@@ -67,8 +67,6 @@ jobs:
           username: ubuntu
           key: ${{secrets.AWS_KEY_PAIR}}
           script: |-
-            echo "${{ secrets.AWS_KEY_PAIR }}" > key.pem
-            chmod 600 key.pem
             sudo apt update
             sudo apt install docker.io -y
             sudo apt install docker-compose -y
