@@ -50,7 +50,7 @@ jobs:
         env:
           REGISTRY: ${{steps.login-ecr.outputs.registry}}
           REPOSITORY: calculator-api
-          REGISTRY_ALIAS: calculator-api-alias
+          REGISTRY_ALIAS: c0q1q5p8
           IMAGE_TAG: ${{github.sha}}
         run: |
           docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
