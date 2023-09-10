@@ -70,11 +70,17 @@ jobs:
             sudo apt update
             sudo apt install docker.io -y
             sudo apt install awscli -y
-            aws configure
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            ws configure set region us-east-1
             sudo $(aws ecr get-login --no-include-email --region us-east-1)
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
-            sudo docker run -d --name api-app -p 4000:4000
-            sudo docker run -d --name mongo-db -p 27017:27017
+            sudo docker stop api-app || true
+            sudo docker rm api-app || true
+            sudo docker stop mongo-db || true
+            sudo docker rm mongo-db || true
+            sudo docker run -d --name api-app -p 4000:4000 $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            sudo docker run -d --name mongo-db -p 27017:27017 mongo:latest
             
 
 
