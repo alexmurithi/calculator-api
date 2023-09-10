@@ -70,13 +70,10 @@ jobs:
             sudo apt update
             sudo apt install docker.io -y
             sudo apt install awscli -y
-            sudo aws ecr get-login-password \
-            --region us-east-1 | docker login \
-            --username AWS \
-            --password-stdin $REGISTRY
-            sudo docker-compose down
+            sudo ${aws ecr get-login --no-include-email --region us-east-1};
+            sudo docker-compose -f ./docker-compose.yaml down
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
-            docker-compose up -d
+            docker-compose -f ./docker-compose.yaml up -d
             
 
 
