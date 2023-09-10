@@ -69,11 +69,10 @@ jobs:
           script: |-
             sudo apt update
             sudo apt install docker.io -y
-            sudo apt-get install docker-compose-plugin
+            sudo apt install docker-compose -y
             sudo apt install awscli -y
             sudo ${aws ecr get-login --no-include-email --region us-east-1};
-            sudo docker stop $(docker ps -a -q)
-            sudo docker rm $(docker ps -a -q)
+            sudo docker-compose -f docker-compose.yml down
             sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
             docker-compose -f docker-compose.yml up -d
             
