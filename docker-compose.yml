@@ -1,0 +1,17 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: api-app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/${DB_NAME}
+  mongo:
+    image: mongo:latest
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
