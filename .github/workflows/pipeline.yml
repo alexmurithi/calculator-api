@@ -49,33 +49,35 @@ jobs:
       - name: Build, tag, and push image to AWS ECR
         env:
           ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
-          ECR_REPOSITORY: calculator-api
-          ECR_REGISTRY_ALIAS: c0q1q5p8
+          ECR_REPOSITORY:  ${{secrets.AWS_ECR_REPOSITORY}}
+          ECR_REGISTRY_ALIAS: ${{secrets.ECR_REGISTRY_ALIAS}}
           IMAGE_TAG: ${{github.sha}}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Deploy docker image to EC2 instance
+      - name: Deploy ecr docker image to EC2 instance
         env:
-          REGISTRY: ${{steps.login-ecr.outputs.registry}}
-          REPOSITORY: calculator-api
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{secrets.AWS_ECR_REPOSITORY}}
           IMAGE_TAG: ${{github.sha}}
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.AWS_EC2_IP}}
           username: ubuntu
           key: ${{secrets.AWS_KEY_PAIR}}
-          script: |-
-            sudo apt update
-            sudo apt install docker.io -y
-            sudo apt install awscli -y
-            sudo aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-            sudo aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            sudo aws configure set region us-east-1
-            sudo $(aws ecr get-login --no-include-email --region us-east-1)
-            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
-            docker-compose up -d
+          port: 22
+          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG h
+          script: |
+            aws configure set aws_access_key_id > echo $AWS_ACCESS_KEY
+            aws configure set aws_secret_access_key > echo $AWS_SECRET_KEY
+            aws configure set default.region > echo $AWS_REGION
+            aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin $ECR_REGISTRY
+            sudo docker rm -f `sudo docker ps -q` 
+            sudo docker run -d -p 8080:80 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             
 
 
