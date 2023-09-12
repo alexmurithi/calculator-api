@@ -43,13 +43,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          mask-password: "true"
+          mask-password: 'true'
           registry-type: public
 
       - name: Build, tag, and push image to AWS ECR
         env:
           ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
-          ECR_REPOSITORY:  ${{secrets.AWS_ECR_REPOSITORY}}
+          ECR_REPOSITORY: ${{secrets.AWS_ECR_REPOSITORY}}
           ECR_REGISTRY_ALIAS: ${{secrets.ECR_REGISTRY_ALIAS}}
           IMAGE_TAG: ${{github.sha}}
         run: |
@@ -79,10 +79,15 @@ jobs:
             aws configure set aws_secret_access_key > echo $AWS_SECRET_ACCESS_KEY
             aws configure set default.region > echo $AWS_REGION
             aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 724088474334.dkr.ecr.$AWS_REGION.amazonaws.com
-            sudo docker rm $(sudo docker ps -aq)
+            #!/bin/bash
+
+            # Check if there are running containers
+              if [ -n "$(sudo docker ps -q)" ]; then
+              # Remove all running containers
+              sudo docker rm -f $(sudo docker ps -aq)
+              else
+              echo "No running containers found."
+              fi
+
             sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             sudo docker run -d -p 8080:80 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            
-
-
-
