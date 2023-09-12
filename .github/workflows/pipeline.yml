@@ -73,7 +73,7 @@ jobs:
           envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG h
           script: |
             sudo apt-get update
-            sudo apr-get install docker.io -y
+            sudo apt-get install docker.io -y
             sudo apt-get install awscli -y
             aws configure set aws_access_key_id > echo $AWS_ACCESS_KEY
             aws configure set aws_secret_access_key > echo $AWS_SECRET_KEY
