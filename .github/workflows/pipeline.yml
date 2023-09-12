@@ -63,6 +63,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{secrets.AWS_ECR_REPOSITORY}}
+          ECR_REGISTRY_ALIAS: ${{secrets.ECR_REGISTRY_ALIAS}}
           IMAGE_TAG: ${{github.sha}}
         uses: appleboy/ssh-action@master
         with:
@@ -70,7 +71,7 @@ jobs:
           username: ubuntu
           key: ${{secrets.AWS_KEY_PAIR}}
           port: 22
-          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG
+          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,ECR_REGISTRY,ECR_REPOSITORY,ECR_REGISTRY_ALIAS,IMAGE_TAG
           script: |-
             sudo apt-get update
             sudo apt-get install docker.io -y
@@ -91,5 +92,5 @@ jobs:
             echo "ECR_REGISTRY: $ECR_REGISTRY"
             echo "ECR_REPOSITORY: $ECR_REPOSITORY"
             echo "IMAGE_TAG: $IMAGE_TAG"
-            sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            sudo docker run -d -p 8080:80 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            sudo docker pull $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG
+            sudo docker run -d -p 8080:80 $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG
